@@ -12,7 +12,23 @@
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"
-      ]
+      ],
+      "env": {
+        "DB_URL": "mongodb+srv://admin:wdCRe6NPmRBGzrZp@cluster-qfnvn.mongodb.net/dev?retryWrites=true&w=majority"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest: Run all",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--runInBand", "--detectOpenHandles"],
+      "env": {
+        "DB_URL": "mongodb+srv://admin:wdCRe6NPmRBGzrZp@cluster-qfnvn.mongodb.net/test?retryWrites=true&w=majority"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
     }
   ]
 }

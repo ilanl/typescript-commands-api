@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const schema : any = {
+export const ContactSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: 'Enter a first name'
@@ -22,5 +22,4 @@ const schema : any = {
        type: Date,
        default: Date.now 
     }
-}
-export const ContactSchema = new mongoose.Schema(schema);
+});
