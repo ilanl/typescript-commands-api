@@ -1,6 +1,6 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
+import * as express from 'express';
+import * as mongoose from 'mongoose';
+import * as bodyParser from 'body-parser';
 import routes from './src/routes/crmRoutes';
 
 const app = express();
@@ -11,7 +11,7 @@ const MONGODB = 'mongodb+srv://admin:wdCRe6NPmRBGzrZp@cluster-qfnvn.mongodb.net/
 mongoose
   .connect(MONGODB, { useNewUrlParser: true , useUnifiedTopology: true })
   .then(() => { console.log('db okay') })
-// bodyparser setup
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js --exec babel-node -e js"
+    "build": "tsc --w",
+    "start": "tsc && ts-node ./dist/index.js"
   },
   "author": "Ilan Levy",
   "license": "ISC",
@@ -16,6 +16,10 @@
     "nodemon": "2.0.2"
   },
   "devDependencies": {
+    "@types/body-parser": "1.17.1",
+    "@types/express": "4.17.2",
+    "@types/mongoose": "5.5.43",
+    "@types/node": "13.5.0",
     "babel-cli": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-stage-0": "6.24.1"
