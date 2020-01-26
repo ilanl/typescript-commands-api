@@ -10,5 +10,9 @@
   "include": [
     "./src/**/*",
     "./src/server.ts"
+  ],
+  "exclude": [
+    "**/tests/**/*",
+    "**/*.spec.*"
   ]
 }

@@ -10,10 +10,10 @@ describe("Simple Unit", () => {
     dependencyMock.check.mockImplementation(() => {
       throw new Error();
     });
-
+    
     let simple = new Simple(dependencyMock);
     let result = simple.makeSimple();
-    
+
     expect(dependencyMock.getPrefix).toHaveBeenCalledWith(true)
     expect(result).toEqual("Found A");
   });
