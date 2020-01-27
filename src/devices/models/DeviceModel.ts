@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export const DeviceSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
     serial: {
         type: String,
         required: 'Serial Number is Missing'
@@ -14,3 +14,5 @@ export const DeviceSchema = new mongoose.Schema({
 },{
   timestamps: true
 });
+
+export const DeviceModel = mongoose.model('Device', schema, 'devices')
