@@ -1,12 +1,61 @@
 import express = require("express");
-import CommandService from "./../services/CommandService";
-import { ICommandInput } from "../commands/ICommand";
-import IDeviceRepository from "../dao/IDeviceRepository";
+import CommandExecutor from "../business/CommandExecutor";
+import { ICommandInput, IParser } from "../business/ICommand";
+import DeviceRepository from "../repository/DeviceRepository";
+import RegisterParser from "../commands/Register/RegisterParser";
+import IDeviceRepository from "../repository/IDeviceRepository";
 
-export async function execute(req: express.Request, res: express.Response) {
-  let input = <ICommandInput>req.body;
-  let repository = <IDeviceRepository>(req["context"].repository);
-  let service = new CommandService(repository);
-  let { data } = await service.run(input)
-  res.json(data)
+class CommandLoader {
+  private _parsers: IParser[]
+  private _loaded: boolean
+  
+  async parsers(): Promise<IParser[]> {
+    if (!this._loaded) {
+      this._parsers = await this.importParsers('../commands');
+      this._loaded = true;
+    }
+    return this._parsers
+  }
+  
+  private importParsers(directory): Promise<IParser[]> {
+    return new Promise((resolve, reject) => {
+      let results = [new RegisterParser()];
+      resolve(results)
+    })
+  }
+}
+
+export default class CommandController {
+  public path = '/commands';
+  public router = express.Router();
+  private _commandLoader;
+  private _deviceRepository: IDeviceRepository;
+  
+  constructor() {
+    this._commandLoader = new CommandLoader()
+    this._deviceRepository = new DeviceRepository()
+    this.intializeRoutes();
+  }
+  
+  public intializeRoutes() {
+    this.router.get(this.path, this.listCommandHelp);
+    this.router.post(this.path, this.executeCommand);
+  }
+  
+  listCommandHelp = async (request: express.Request, response: express.Response) => {
+    let parsers = await this._commandLoader.parsers()
+    let listCommands = parsers.map((p) => { 
+      let { descriptor } = p
+      let { name, help } = descriptor
+      return { name, help }
+    })
+    response.json(listCommands);
+  }
+  
+  executeCommand = async (request: express.Request, response: express.Response) => {
+    let input = <ICommandInput>request.body;
+    let parsers = await this._commandLoader.parsers()
+    let { data } = await new CommandExecutor(this._deviceRepository, parsers).run(input)
+    response.json(data)
+  }
 }

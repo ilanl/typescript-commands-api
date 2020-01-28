@@ -1,5 +1,5 @@
 import IDeviceRepository from "./IDeviceRepository";
-import IDeviceModel from "./../models/IDeviceModel";
+import IDeviceModel from "../models/IDeviceModel";
 import DeviceModel from "../models/DeviceModel";
 import * as shortid from "shortid"
 

@@ -1,19 +1,34 @@
-import * as express from "express";
-import * as mongoose from 'mongoose';
+import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { ServerSettings } from './settings';
-import { Middlewares } from "./middlewares/Middlewares"
+import CommandController from './devices/controllers/CommandController';
 
-const app = express();
+export default class App {
+  public app: express.Application;
+  public port: number;
+  private _controllers = [new CommandController()];
 
-main()
-
-async function main() {
-  // await mongoose.connect(process.env.DB_URL, { useNewUrlParser: true , useUnifiedTopology: true })
-  app.set('port', ServerSettings.port);
-  app.set('env', 'development');
-  Middlewares.registerModules(app);
-  app.use(express.static('public'));
+  constructor(port) {
+    this.app = express();
+    this.port = port;
+    
+    this.initializeMiddlewares();
+    this.initializeControllers(this._controllers);
+  }
+ 
+  private initializeMiddlewares() {
+    this.app.use(bodyParser.json());
+    // Add Middlewares
+  }
+  
+  private initializeControllers(controllers) {
+    controllers.forEach((controller) => {
+      this.app.use('/', controller.router);
+    });
+  }
+  
+  public listen() {
+    this.app.listen(this.port, () => {
+      console.log(`App listening on the port ${this.port}`);
+    });
+  }
 }
-
-export default app;

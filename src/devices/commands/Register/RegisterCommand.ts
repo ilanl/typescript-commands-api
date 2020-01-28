@@ -1,5 +1,5 @@
-import IDeviceRepository from "../../dao/IDeviceRepository";
-import { IRunnableCommand, ICommandOutput } from "../ICommand";
+import IDeviceRepository from "../../repository/IDeviceRepository";
+import { IRunnableCommand, ICommandOutput, ICommandDescriptor } from "../../business/ICommand";
 
 export default class RegisterCommand implements IRunnableCommand {
   
