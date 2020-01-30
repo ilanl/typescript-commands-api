@@ -5,8 +5,8 @@ export enum DeviceState {
 }
 
 export default interface IDeviceModel {
-  readonly id: string
-  readonly type: string,
-  state: DeviceState,
-  attributes: {}
+  readonly id: string;
+  readonly type: string;
+  state: DeviceState;
+  attributes: {};
 }

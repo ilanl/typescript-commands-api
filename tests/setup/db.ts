@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 
 mongoose.set('useCreateIndex', true)
 
-async function removeAllCollections () {
+async function removeAllCollections() {
   const collections = Object.keys(mongoose.connection.collections)
   for (const collectionName of collections) {
     const collection = mongoose.connection.collections[collectionName]
@@ -11,7 +11,7 @@ async function removeAllCollections () {
   }
 }
 
-async function dropAllCollections () {
+async function dropAllCollections() {
   const collections = Object.keys(mongoose.connection.collections)
   for (const collectionName of collections) {
     const collection = mongoose.connection.collections[collectionName]

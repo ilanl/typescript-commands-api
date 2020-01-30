@@ -7,7 +7,7 @@ const help = async (app) => {
 }
 
 const add = async (app, deviceTypes) => {
-  let response = await request(app).post("/commands").send({
+  const response = await request(app).post("/commands").send({
     command: 'add',
     args: deviceTypes
   })
@@ -15,7 +15,7 @@ const add = async (app, deviceTypes) => {
 }
 
 const list = async (app, filterTypes) => {
-  let response = await request(app).post("/commands").send({
+  const response = await request(app).post("/commands").send({
     command: 'list',
     args: ['--only'].concat(filterTypes)
   })
@@ -23,7 +23,7 @@ const list = async (app, filterTypes) => {
 }
 
 const power = async (app, deviceId, state) => {
-  let response = await request(app).post("/commands").send({
+  const response = await request(app).post("/commands").send({
     command: 'switch',
     args: [state, deviceId]
   })
@@ -31,62 +31,61 @@ const power = async (app, deviceId, state) => {
 }
 
 describe.each([
-    ['add'],
-    ['switch']
-  ])('.command manual', (a) => {
-    const app = new App(0).app
+  ['add'],
+  ['switch']
+])('.command manual', (a) => {
+  const app = new App(0).app
 
-    it(`registered ${a}`, async () => {
-      let response = await help(app)
-      let data = JSON.parse(response.text)
-      let cmd = data.filter((c) => c.name === 'add')[0]
-      console.log({...cmd})
-      expect(cmd).toBeDefined();
-      expect(cmd.help).toBeDefined();
-    });
+  it(`registered ${a}`, async () => {
+    const response = await help(app)
+    const data = JSON.parse(response.text)
+    const cmd = data.filter((c) => c.name === 'add')[0]
+    expect(cmd).toBeDefined();
+    expect(cmd.help).toBeDefined();
+  });
 });
 
 describe("bad command parameters", () => {
   const app = new App(0).app;
   it(".unrecognized command", async () => {
-    let response = await request(app).post("/commands").send({
+    const response = await request(app).post("/commands").send({
       command: 'foo'
     })
-    let status = response.status;
+    const status = response.status;
     expect(status).toEqual(403);
-    
-    let message = response.body;
+
+    const message = response.body;
     expect(message).toEqual("COMMAND_NOT_RECOGNIZED");
   });
 })
 
 describe(". basic scenario - turn on all devices", () => {
   const app = new App(0).app;
-  let deviceTypes = ['lamp', 'lamp', 'airconditioner'];
-  
-  it(".add devices", async () => {  
-    let response = await add(app, deviceTypes);
-    let ids = response.body;
+  const deviceTypes = ['lamp', 'lamp', 'airconditioner'];
+
+  it(".add devices", async () => {
+    const response = await add(app, deviceTypes);
+    const ids = response.body;
     expect(ids).toHaveLength(deviceTypes.length);
   });
 
   it(".list devices", async () => {
-    let response = await list(app, []);
-    let devices = response.body;
+    const response = await list(app, []);
+    const devices = response.body;
     expect(devices).toHaveLength(deviceTypes.length);
   });
 
   it(".list devices with parameter", async () => {
     const distinctTypes = deviceTypes.filter((n, i) => deviceTypes.indexOf(n) === i);
-    let response = await list(app, distinctTypes);
-    let devices = response.body;
+    const response = await list(app, distinctTypes);
+    const devices = response.body;
     expect(devices).toHaveLength(deviceTypes.length);
   });
-  
+
   it(".turn devices on | off", async () => {
     let response = await list(app, [])
     let devices = response.body;
-    let deviceId = devices[0]._id;
+    const deviceId = devices[0]._id;
 
     response = await power(app, deviceId, 'on');
 
@@ -96,7 +95,7 @@ describe(". basic scenario - turn on all devices", () => {
     expect(devices[0].state).toEqual('on');
 
     response = await power(app, deviceId, 'off');
-    
+
     response = await list(app, [])
     devices = response.body;
 

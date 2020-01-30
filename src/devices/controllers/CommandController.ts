@@ -14,8 +14,11 @@ export default class CommandController {
 
   constructor() {
 
+    // TODO: Find a better way to do this
+    // DO NOT DELETE --- need to import * commands and decorate
     // tslint:disable-next-line: no-console
-    console.log('commands', {...commands})
+    console.log('commands', { ...commands })
+    // DO NOT DELETE --- need to import * commands and decorate
 
     this._deviceRepository = new DeviceRepository();
     this._factory = new CommandFactory(this._deviceRepository);
@@ -32,7 +35,7 @@ export default class CommandController {
     const metadataIndex = this._factory.index()
     response.json(metadataIndex)
   }
-
+  
   executeCommand = async (request: express.Request, response: express.Response) => {
     try {
       const { command, args } = request.body;

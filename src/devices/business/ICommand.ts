@@ -1,16 +1,17 @@
 export interface ICommmandInputArguments {
-  parameters: string[]
+    parameters: string[];
 }
 
 export interface ICommandInput {
-  command: string;
-  args?: ICommmandInputArguments;
+    command: string;
+    args?: ICommmandInputArguments;
 }
 
 export interface ICommandOutput {
-  data: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
 }
 
 export interface IRunnableCommand {
-  exec(args?: string[]): Promise<ICommandOutput>
+    exec(args?: string[]): Promise<ICommandOutput>;
 }
