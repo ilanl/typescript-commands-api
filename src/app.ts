@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import CommandController from './devices/controllers/CommandController';

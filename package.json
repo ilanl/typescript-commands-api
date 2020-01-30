@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --w",
+    "build": "tsc --w --experimentalDecorators --emitDecoratorMetadata",
     "start": "tsc && ts-node ./dist/server.js",
     "test": "jest"
   },
@@ -37,7 +37,10 @@
     "mongodb": "3.5.2",
     "mongoose": "5.8.9",
     "nodemon": "2.0.2",
-    "shortid": "2.2.15"
+    "reflect-metadata": "0.1.13",
+    "shortid": "2.2.15",
+    "systemjs": "6.1.9",
+    "traceur": "0.0.111"
   },
   "devDependencies": {
     "@types/body-parser": "1.17.1",

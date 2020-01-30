@@ -1,9 +1,9 @@
 import IDeviceModel from "../models/IDeviceModel";
 
 export default interface IDeviceRepository {
-  getAll(): IDeviceModel[]
-  getById(id: string): IDeviceModel
-  create(type: string, params: any): IDeviceModel
-  update(device: IDeviceModel): void
-  delete(id: string)
+  getAll(): Promise<IDeviceModel[]>
+  getById(id: string): Promise<IDeviceModel>
+  create(type: string, params: any): Promise<IDeviceModel>
+  update(device: IDeviceModel): Promise<IDeviceModel>
+  delete(id: string): Promise<void>
 }

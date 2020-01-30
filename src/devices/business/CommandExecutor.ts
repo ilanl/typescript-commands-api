@@ -1,31 +1,26 @@
 import ICommandExecutor from "./ICommandExecutor";
-import IDeviceRepository from "../repository/IDeviceRepository"
-import { ICommandInput, ICommandOutput, IParser, IRunnableCommand } from "./ICommand";
-import { CommandFactory, ICommandFactory } from "./CommandFactory";
+import { ICommandInput, ICommandOutput, IRunnableCommand } from "./ICommand";
+import { ICommandFactory } from "./CommandFactory";
 
 export default class CommandExecutor implements ICommandExecutor {
   private _factory: ICommandFactory;
-  private _parsers: IParser[];
   
-  constructor(repository: IDeviceRepository, parsers: IParser[]) {
-    this._factory = new CommandFactory(repository);
-    this._parsers = parsers
+  constructor(factory: ICommandFactory) {
+    this._factory = factory;
   }
   
   run(input: ICommandInput): Promise<ICommandOutput> {
     return new Promise((resolve, reject) => {
-      let command: IRunnableCommand
-      for(let parser of this._parsers) {
-        if(parser.descriptor.name === input.command) {
-          command = parser.parse(input, this._factory)
-          if (command) {
-            resolve(command.exec(input.args))
-          }
-        }
-     }
-     if (!command) {
-       reject(new Error('COMMAND_NOT_RECOGNIZED'))
-     }
+      try {
+        let { command, args } = input;
+        let cmd = this._factory.make(command);
+        console.log('extract args', args.parameters);
+        let output = cmd.exec(args.parameters);
+        resolve(output);
+      }
+      catch(e) {
+        reject(e);
+      }
     })
   }
 }

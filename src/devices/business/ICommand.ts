@@ -1,24 +1,16 @@
-import { ICommandFactory } from "./CommandFactory"
+export interface ICommmandInputArguments {
+  parameters: string[]
+}
 
 export interface ICommandInput {
   command: string;
-  args?: string[];
+  args?: ICommmandInputArguments;
 }
 
 export interface ICommandOutput {
   data: any;
 }
 
-export interface ICommandDescriptor {
-  name: string
-  help: string
-}
-
 export interface IRunnableCommand {
-  exec(args?): ICommandOutput;
-}
-
-export interface IParser {
-  descriptor: ICommandDescriptor
-  parse(input: ICommandInput, factory: ICommandFactory): IRunnableCommand
+  exec(args?: string[]): Promise<ICommandOutput>
 }

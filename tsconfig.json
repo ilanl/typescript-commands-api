@@ -5,7 +5,9 @@
     "module": "commonjs",
     "allowJs": true,
     "target": "es6",
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "./src/**/*",

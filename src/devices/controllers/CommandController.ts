@@ -1,39 +1,24 @@
-import express = require("express");
+import * as express from "express";
 import CommandExecutor from "../business/CommandExecutor";
-import { ICommandInput, IParser } from "../business/ICommand";
 import DeviceRepository from "../repository/DeviceRepository";
-import RegisterParser from "../commands/Register/RegisterParser";
 import IDeviceRepository from "../repository/IDeviceRepository";
-
-class CommandLoader {
-  private _parsers: IParser[]
-  private _loaded: boolean
-  
-  async parsers(): Promise<IParser[]> {
-    if (!this._loaded) {
-      this._parsers = await this.importParsers('../commands');
-      this._loaded = true;
-    }
-    return this._parsers
-  }
-  
-  private importParsers(directory): Promise<IParser[]> {
-    return new Promise((resolve, reject) => {
-      let results = [new RegisterParser()];
-      resolve(results)
-    })
-  }
-}
+import { CommandFactory, ICommandFactory } from "../business/CommandFactory";
+import * as commands from "../../devices/commands"
 
 export default class CommandController {
   public path = '/commands';
   public router = express.Router();
-  private _commandLoader;
   private _deviceRepository: IDeviceRepository;
+  private _commandExecutor: CommandExecutor;
+  private _factory: ICommandFactory;
   
   constructor() {
-    this._commandLoader = new CommandLoader()
-    this._deviceRepository = new DeviceRepository()
+    
+    console.log('commands', {...commands})
+
+    this._deviceRepository = new DeviceRepository();
+    this._factory = new CommandFactory(this._deviceRepository);
+    this._commandExecutor = new CommandExecutor(this._factory);
     this.intializeRoutes();
   }
   
@@ -43,19 +28,19 @@ export default class CommandController {
   }
   
   listCommandHelp = async (request: express.Request, response: express.Response) => {
-    let parsers = await this._commandLoader.parsers()
-    let listCommands = parsers.map((p) => { 
-      let { descriptor } = p
-      let { name, help } = descriptor
-      return { name, help }
-    })
-    response.json(listCommands);
+    let metadataIndex = this._factory.index()
+    response.json(metadataIndex)
   }
   
   executeCommand = async (request: express.Request, response: express.Response) => {
-    let input = <ICommandInput>request.body;
-    let parsers = await this._commandLoader.parsers()
-    let { data } = await new CommandExecutor(this._deviceRepository, parsers).run(input)
-    response.json(data)
+    try {
+      let { command, args } = request.body;
+      let input = { command, args: { parameters: args } };
+      let { data } = await this._commandExecutor.run(input);
+      response.json(data);
+    }
+    catch (error) {
+      response.status(403).json(error.message);
+    }
   }
 }
