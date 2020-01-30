@@ -1,7 +1,7 @@
-import * as shortid from "shortid"
-import IDeviceRepository from "./IDeviceRepository";
-import IDeviceModel from "../models/IDeviceModel";
-import DeviceModel from "../models/DeviceModel";
+import * as shortid from 'shortid';
+import IDeviceRepository from './IDeviceRepository';
+import IDeviceModel from '../models/IDeviceModel';
+import DeviceModel from '../models/DeviceModel';
 
 export default class DeviceRepository implements IDeviceRepository {
 
@@ -10,10 +10,10 @@ export default class DeviceRepository implements IDeviceRepository {
   getAll(): Promise<IDeviceModel[]> {
     return new Promise((resolve , reject) => {
       try {
-        let devices:IDeviceModel[] = []
-        for (let id in this._devices) {
+        const devices:IDeviceModel[] = []
+        for (const id in this._devices) {
           if (this._devices.hasOwnProperty(id)) {
-            let device = <IDeviceModel>this._devices[id]
+            const device = this._devices[id] as IDeviceModel
             devices.push(device)
           }
         }
@@ -24,11 +24,11 @@ export default class DeviceRepository implements IDeviceRepository {
       }
     })
   }
-  
+
   getById(id: string): Promise<IDeviceModel> {
     return new Promise((resolve , reject) => {
       try {
-        let foundDevice: IDeviceModel = this._devices[id]
+        const foundDevice: IDeviceModel = this._devices[id]
         if (!foundDevice) {
           reject(new Error('DEVICE_NOT_FOUND'))
         }
@@ -39,12 +39,12 @@ export default class DeviceRepository implements IDeviceRepository {
       }
     })
   }
-  
+
   create(type: string, params: any): Promise<IDeviceModel> {
     return new Promise((resolve, reject) => {
       try {
-        let randomId = shortid.generate();
-        let device = new DeviceModel(randomId, type, params);
+        const randomId = shortid.generate();
+        const device = new DeviceModel(randomId, type, params);
         this._devices[randomId] = device;
         resolve(device)
       }
@@ -57,7 +57,7 @@ export default class DeviceRepository implements IDeviceRepository {
   update(device: IDeviceModel): Promise<IDeviceModel> {
     return new Promise(async (resolve, reject) => {
       try {
-        let found: IDeviceModel = await this.getById(device.id)
+        const found: IDeviceModel = await this.getById(device.id)
         if (found.type !== device.type) {
           reject(new Error('DEVICE_TYPE_READONLY'))
         }

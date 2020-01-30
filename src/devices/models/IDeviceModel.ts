@@ -1,6 +1,6 @@
 
 export enum DeviceState {
-  Off = 'off',  
+  Off = 'off',
   On = 'on'
 }
 

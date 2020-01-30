@@ -1,4 +1,4 @@
-import IDeviceModel from "../models/IDeviceModel";
+import IDeviceModel from '../models/IDeviceModel';
 
 export default interface IDeviceRepository {
   getAll(): Promise<IDeviceModel[]>

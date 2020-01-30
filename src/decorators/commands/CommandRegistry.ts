@@ -1,24 +1,28 @@
-import IDeviceRepository from "../../devices/repository/IDeviceRepository";
+import IDeviceRepository from '../../devices/repository/IDeviceRepository';
 
-export var registry: {
+export let registry: {
   [name:string]: {
     help: string,
     create: (repository: IDeviceRepository)=>any }
 } = {}
 
 export const register = options => {
+  // tslint:disable-next-line: only-arrow-functions
   return function (target) {
-    
+
+    // tslint:disable-next-line: no-console
     console.log('class target:', options);
     const original = target;
-    
+
     function construct(c, args) {
         return new c(args);
     }
 
     // the new constructor behaviour
+    // tslint:disable-next-line: only-arrow-functions
     const f: any = function (args) {
-        console.log(`New: ${original['name']} is created`);
+        // tslint:disable-next-line: no-console
+        console.log(`New: ${original.name} is created`);
         return construct(original, args);
     }
 
@@ -27,12 +31,13 @@ export const register = options => {
 
     registry[options.name] = {
       help: options.help,
-      create: (repository: IDeviceRepository) => { 
+      create: (repository: IDeviceRepository) => {
+        // tslint:disable-next-line: no-console
         console.log('creating instance', repository);
         return construct(f, repository);
       }
     }
-    
+
     return f;
   };
 }

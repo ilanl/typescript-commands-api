@@ -11,24 +11,21 @@ export default class App {
   constructor(port) {
     this.app = express();
     this.port = port;
-    
     this.initializeMiddlewares();
     this.initializeControllers(this._controllers);
   }
- 
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
     // Add Middlewares
   }
-  
   private initializeControllers(controllers) {
     controllers.forEach((controller) => {
       this.app.use('/', controller.router);
     });
   }
-  
   public listen() {
     this.app.listen(this.port, () => {
+      // tslint:disable-next-line: no-console
       console.log(`App listening on the port ${this.port}`);
     });
   }

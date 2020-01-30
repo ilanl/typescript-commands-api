@@ -9,7 +9,7 @@ export const Get = (path: string): MethodDecorator => {
     }
 
     // Get the routes stored so far, extend it by the new route and re-set the metadata.
-    const routes = Reflect.getMetadata('routes', target.constructor) as Array<RouteDefinition>;
+    const routes = Reflect.getMetadata('routes', target.constructor) as RouteDefinition[];
 
     routes.push({
       requestMethod: 'get',

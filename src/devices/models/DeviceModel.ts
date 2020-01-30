@@ -1,4 +1,4 @@
-import IDeviceModel, { DeviceState } from "./IDeviceModel"
+import IDeviceModel, { DeviceState } from './IDeviceModel'
 
 export default class DeviceModel implements IDeviceModel {
     readonly _id: string
@@ -12,11 +12,9 @@ export default class DeviceModel implements IDeviceModel {
         this.attributes = attributes || {}
         this.state = DeviceState.Off
     }
-    
     get id(): string {
         return this._id;
     }
-
     get type(): string {
         return this._type;
     }
