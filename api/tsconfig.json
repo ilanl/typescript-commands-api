@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "allowJs": true,
+    "target": "es6",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "./src/**/*",
+    "./src/server.ts"
+  ],
+  "exclude": [
+    "**/tests/**/*",
+    "**/*.test.*"
+  ]
+}
